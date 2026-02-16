@@ -23,10 +23,6 @@ public class Game {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Plataform plataform;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private GameEnums.GameStatus status;
 
 }
