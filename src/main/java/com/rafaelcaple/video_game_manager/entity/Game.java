@@ -10,19 +10,16 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
-    @Column(nullable = false)
+    private Long id;
+    @Column (nullable = false)
     private String title;
-
+    @Column(nullable = false, unique = true)
+    private String rawgId;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private GameEnums.GameStatus status;
-
 }
