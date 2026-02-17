@@ -31,4 +31,16 @@ public class RawgClient {
                 .bodyToMono(Map.class)
                 .block();
     }
+
+    public Map<String, Object> getGameById (Integer rawgId) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/games/"+ rawgId)
+                        .queryParam("key",apiKey)
+                        .build()
+                )
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+    }
 }
