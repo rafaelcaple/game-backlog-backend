@@ -34,4 +34,15 @@ public class GameService {
         return repo.findAll();
     }
 
+    public Game updateStatus(Long id, GameEnums.GameStatus status) {
+        Game game = repo.findById(id).orElseThrow();
+        game.setStatus(status);
+        return repo.save(game);
+    }
+
+    public void delete (Long id) {
+        Game game = repo.findById(id).orElseThrow();
+        repo.delete(game);
+    }
+
 }

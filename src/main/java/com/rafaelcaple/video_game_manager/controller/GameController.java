@@ -1,6 +1,7 @@
 package com.rafaelcaple.video_game_manager.controller;
 
 import com.rafaelcaple.video_game_manager.entity.Game;
+import com.rafaelcaple.video_game_manager.enums.GameEnums;
 import com.rafaelcaple.video_game_manager.rawg.RawgClient;
 import com.rafaelcaple.video_game_manager.service.GameService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,13 @@ public class GameController {
     @PostMapping("/save/{rawgId}")
     public ResponseEntity<Game> saveFromRawg (@PathVariable Integer rawgId) {
         return ResponseEntity.ok(service.saveFromRawg(rawgId));
+    }
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Game> updateStatus (@PathVariable Long id, @RequestParam GameEnums.GameStatus status) {
+        return ResponseEntity.ok(service.updateStatus(id,status));
+    }
+    @DeleteMapping("/{id}")
+    public void delete (@PathVariable Long id) {
+        service.delete(id);
     }
 }
