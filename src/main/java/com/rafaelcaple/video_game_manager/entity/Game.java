@@ -17,9 +17,13 @@ public class Game {
     private Long id;
     @Column (nullable = false)
     private String title;
-    @Column(nullable = false, unique = true)
-    private Integer rawgId;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private GameEnums.GameStatus status;
+
+    @Column(nullable = false, unique = true)
+    private Integer rawgId;
+    @Column
+    private String coverImage;
+
 }
