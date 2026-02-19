@@ -25,7 +25,7 @@ public class GameService {
         Map<String,Object> data = rawgClient.getGameById(rawgId);
         Game game = new Game();
         game.setTitle((String) data.get("name"));
-        game.setStatus(GameEnums.GameStatus.BACKLOG);
+        game.setStatus(GameEnums.GameStatus.PLAYING);
         game.setRawgId(rawgId);
         game.setCoverImage((String) data.get("background_image"));
         return repo.save(game);
