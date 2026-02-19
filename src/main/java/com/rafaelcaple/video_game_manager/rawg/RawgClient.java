@@ -29,7 +29,6 @@ public class RawgClient {
                         .queryParam("exclude_additions", true)
                         .queryParam("metacritic", "1,100")
                         .queryParam("ordering", "-relevance")
-                        .queryParam("search_precise", true)
                         .build())
                 .retrieve()
                 .bodyToMono(Map.class)
