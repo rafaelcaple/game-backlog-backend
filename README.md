@@ -4,6 +4,10 @@ REST API for managing a personal game backlog, integrated with the RAWG Video Ga
 
 Live demo: [game-backlog-topaz.vercel.app](https://game-backlog-topaz.vercel.app)
 
+## Frontend Repository
+
+[game-backlog](https://github.com/rafaelcaple/game-backlog) — React frontend integrated with this API.
+
 ## Tech Stack
 
 - Java 17
@@ -29,11 +33,7 @@ Live demo: [game-backlog-topaz.vercel.app](https://game-backlog-topaz.vercel.app
 - `PLAYING` - Games you are currently playing
 - `COMPLETED` - Games you have completed
 - `DROPPED` - Games you stopped playing
-
-## Frontend Repository
-
-[game-backlog](https://github.com/rafaelcaple/game-backlog) — React frontend integrated with this API.
-
+  
 ## How to run
 
 ### Prerequisites
