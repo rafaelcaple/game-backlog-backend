@@ -62,4 +62,5 @@ The H2 console is available at `http://localhost:8080/h2-console` (JDBC URL: `jd
 - PostgreSQL database for persistent storage
 - Individual game lists per user
 - Game rating system
+- Change to IGDB API for better search mechanic
 
