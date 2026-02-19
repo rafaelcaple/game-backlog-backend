@@ -22,6 +22,9 @@ public class GameService {
     }
 
     public Game saveFromRawg(Integer rawgId) {
+        if (repo.existsByRawgId(rawgId)) {
+            throw new RuntimeException("Game already on your list");
+        }
         Map<String,Object> data = rawgClient.getGameById(rawgId);
         Game game = new Game();
         game.setTitle((String) data.get("name"));
