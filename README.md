@@ -1,4 +1,4 @@
-# Game Backlog - Backend
+# Game Backlog
 
 REST API for managing a personal game backlog, integrated with the RAWG Video Games Database API.
 
