@@ -1,10 +1,9 @@
-package com.rafaelcaple.video_game_manager.service;
+package com.rafaelcaple.gamebacklog.service;
 
-import com.rafaelcaple.video_game_manager.entity.Game;
-import com.rafaelcaple.video_game_manager.enums.GameEnums;
-import com.rafaelcaple.video_game_manager.rawg.RawgClient;
-import com.rafaelcaple.video_game_manager.repository.GameRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.rafaelcaple.gamebacklog.entity.Game;
+import com.rafaelcaple.gamebacklog.enums.GameEnums;
+import com.rafaelcaple.gamebacklog.rawg.RawgClient;
+import com.rafaelcaple.gamebacklog.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

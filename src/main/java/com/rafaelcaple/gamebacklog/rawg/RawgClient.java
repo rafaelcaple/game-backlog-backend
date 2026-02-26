@@ -1,4 +1,4 @@
-package com.rafaelcaple.video_game_manager.rawg;
+package com.rafaelcaple.gamebacklog.rawg;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.rafaelcaple.video_game_manager;
+package com.rafaelcaple.gamebacklog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

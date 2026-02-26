@@ -1,4 +1,4 @@
-package com.rafaelcaple.video_game_manager.enums;
+package com.rafaelcaple.gamebacklog.enums;
 
 public class GameEnums {
     public enum GameStatus {

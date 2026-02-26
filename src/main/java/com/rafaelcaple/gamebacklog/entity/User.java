@@ -1,6 +1,5 @@
 package com.rafaelcaple.gamebacklog.entity;
 
-import com.rafaelcaple.video_game_manager.entity.Game;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,4 +1,4 @@
-package com.rafaelcaple.video_game_manager;
+package com.rafaelcaple.gamebacklog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

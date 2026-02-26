@@ -1,6 +1,6 @@
-package com.rafaelcaple.video_game_manager.entity;
+package com.rafaelcaple.gamebacklog.entity;
 
-import com.rafaelcaple.video_game_manager.enums.GameEnums;
+import com.rafaelcaple.gamebacklog.enums.GameEnums;
 import jakarta.persistence.*;
 import lombok.*;
 
