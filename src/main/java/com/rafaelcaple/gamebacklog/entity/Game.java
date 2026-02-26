@@ -3,6 +3,7 @@ package com.rafaelcaple.gamebacklog.entity;
 import com.rafaelcaple.gamebacklog.enums.GameEnums;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name="GAMES")
@@ -10,7 +11,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@EqualsAndHashCode(of = "id")
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +26,9 @@ public class Game {
     private Integer rawgId;
     @Column
     private String coverImage;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
 }
