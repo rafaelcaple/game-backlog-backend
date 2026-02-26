@@ -1,8 +1,13 @@
 package com.rafaelcaple.gamebacklog.repository;
 
 import com.rafaelcaple.gamebacklog.entity.Game;
+import com.rafaelcaple.gamebacklog.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface GameRepository extends JpaRepository<Game,Long> {
-    boolean existsByRawgId(Integer rawgId);
+    boolean existsByRawgIdAndUser(Integer rawgId,User user);
+    List<Game> findByUser(User user);
+
 }
