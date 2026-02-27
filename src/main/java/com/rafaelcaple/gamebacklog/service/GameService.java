@@ -5,6 +5,7 @@ import com.rafaelcaple.gamebacklog.entity.User;
 import com.rafaelcaple.gamebacklog.enums.GameEnums;
 import com.rafaelcaple.gamebacklog.rawg.RawgClient;
 import com.rafaelcaple.gamebacklog.repository.GameRepository;
+import com.rafaelcaple.gamebacklog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GameService {
     private final GameRepository repo;
+    private final UserRepository userRepository;
     private final RawgClient rawgClient;
 
     public Map<String,Object> searchGames (String query) {
@@ -24,7 +26,9 @@ public class GameService {
     }
 
     public Game saveFromRawg(Integer rawgId, User user) {
-        if (repo.existsByRawgIdAndUser(rawgId, user)) {
+        User persistedUser = userRepository.findByUsername(
+                user.getUsername()) .orElseThrow(() -> new RuntimeException("User not found"));
+        if (repo.existsByRawgIdAndUser(rawgId, persistedUser)) {
             throw new RuntimeException("Game already on your list");
         }
         Map<String,Object> data = rawgClient.getGameById(rawgId);
@@ -33,12 +37,15 @@ public class GameService {
         game.setStatus(GameEnums.GameStatus.PLAYING);
         game.setRawgId(rawgId);
         game.setCoverImage((String) data.get("background_image"));
-        game.setUser(user);
+        game.setUser(persistedUser);
+
         return repo.save(game);
     }
 
     public List<Game> listSaved(User user) {
-        return repo.findByUser(user);
+        User persistedUser = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return repo.findByUserId(persistedUser.getId());
     }
 
     public Game updateStatus(Long id, GameEnums.GameStatus status, User user) {

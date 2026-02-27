@@ -22,7 +22,7 @@ public class Game {
     @Column(nullable = false)
     private GameEnums.GameStatus status;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Integer rawgId;
     @Column
     private String coverImage;

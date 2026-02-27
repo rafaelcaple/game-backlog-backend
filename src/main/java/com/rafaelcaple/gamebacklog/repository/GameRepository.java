@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface GameRepository extends JpaRepository<Game,Long> {
-    boolean existsByRawgIdAndUser(Integer rawgId,User user);
-    List<Game> findByUser(User user);
+    List<Game> findByUserId(Long userId);
+    boolean existsByRawgIdAndUser(Integer rawgId, User user);
 
 }

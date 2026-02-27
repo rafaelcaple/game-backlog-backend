@@ -23,12 +23,10 @@ public class GameController {
         return ResponseEntity.ok(service.searchGames(query));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Game>> listSaved (@AuthenticationPrincipal User user){
+    @GetMapping public ResponseEntity<List<Game>> listSaved(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(service.listSaved(user));
     }
-
-    @PostMapping("/save/{rawgId}")
+        @PostMapping("/save/{rawgId}")
     public ResponseEntity<Game> saveFromRawg (@PathVariable Integer rawgId, @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(service.saveFromRawg(rawgId, user));
     }

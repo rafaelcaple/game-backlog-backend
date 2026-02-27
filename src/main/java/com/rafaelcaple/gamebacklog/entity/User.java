@@ -1,5 +1,6 @@
 package com.rafaelcaple.gamebacklog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Game> games;
 
     @Override
