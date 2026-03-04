@@ -17,6 +17,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public String register (String username, String password) {
+        if (userRepository.existsByUsername(username.toLowerCase().trim())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
+        }
         String hashedPassword = passwordEncoder.encode(password);
         User user = new User();
         user.setUsername(username.toLowerCase().trim());
