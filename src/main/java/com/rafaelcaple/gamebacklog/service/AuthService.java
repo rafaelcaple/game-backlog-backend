@@ -4,8 +4,10 @@ import com.rafaelcaple.gamebacklog.entity.User;
 import com.rafaelcaple.gamebacklog.repository.UserRepository;
 import com.rafaelcaple.gamebacklog.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,10 @@ public class AuthService {
     }
 
     public String login (String username, String password) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User or password invalid!"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Senha incorreta!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User or password invalid!");
         }
         return jwtService.generateToken(user);
     }
