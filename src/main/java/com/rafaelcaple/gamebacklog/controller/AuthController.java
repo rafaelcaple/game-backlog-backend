@@ -22,6 +22,7 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+
     public record AuthRequest (
             @NotBlank(message = "Username is required")
             @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters")
@@ -32,13 +33,21 @@ public class AuthController {
             String password
     ){}
 
+    public record LoginRequest (
+            @NotBlank(message = "Username is required")
+            String username,
+
+            @NotBlank(message = "Password is required")
+            String password
+    ){}
+
     @PostMapping("/register")
     public String register (@Valid @RequestBody AuthRequest request) {
         return authService.register(request.username(), request.password());
     }
 
     @PostMapping("/login")
-    public String login (@Valid @RequestBody AuthRequest request) {
+    public String login (@Valid @RequestBody LoginRequest request) {
         return authService.login(request.username(), request.password());
     }
 
@@ -47,7 +56,6 @@ public class AuthController {
 
         private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-        // Erros de validação (@NotBlank, @Size, etc)
         @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex) {
             List<Map<String, String>> fieldErrors = ex.getBindingResult().getFieldErrors()
@@ -58,14 +66,12 @@ public class AuthController {
                     .body(Map.of("fieldErrors", fieldErrors));
         }
 
-        // Erros de negócio (username já existe, credenciais inválidas, etc)
         @ExceptionHandler(ResponseStatusException.class)
         public ResponseEntity<Map<String, String>> handleResponseStatus(ResponseStatusException ex) {
             return ResponseEntity.status(ex.getStatusCode())
                     .body(Map.of("message", ex.getReason()));
         }
 
-        // Qualquer erro inesperado — esconde o detalhe do cliente
         @ExceptionHandler(Exception.class)
         public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
             log.error("Unexpected error: {}", ex.getMessage());
