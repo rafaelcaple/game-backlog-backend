@@ -19,14 +19,14 @@ public class AuthService {
     public String register (String username, String password) {
         String hashedPassword = passwordEncoder.encode(password);
         User user = new User();
-        user.setUsername(username);
+        user.setUsername(username.toLowerCase().trim());
         user.setPassword(hashedPassword);
         user = userRepository.save(user);
         return jwtService.generateToken(user);
     }
 
     public String login (String username, String password) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username.toLowerCase().trim())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User or password invalid!"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User or password invalid!");
