@@ -5,10 +5,16 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,4 +42,35 @@ public class AuthController {
         return authService.login(request.username(), request.password());
     }
 
+    @RestControllerAdvice
+    public class GlobalExceptionHandler {
+
+        private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+        // Erros de validação (@NotBlank, @Size, etc)
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex) {
+            List<Map<String, String>> fieldErrors = ex.getBindingResult().getFieldErrors()
+                    .stream()
+                    .map(e -> Map.of("field", e.getField(), "defaultMessage", e.getDefaultMessage()))
+                    .toList();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("fieldErrors", fieldErrors));
+        }
+
+        // Erros de negócio (username já existe, credenciais inválidas, etc)
+        @ExceptionHandler(ResponseStatusException.class)
+        public ResponseEntity<Map<String, String>> handleResponseStatus(ResponseStatusException ex) {
+            return ResponseEntity.status(ex.getStatusCode())
+                    .body(Map.of("message", ex.getReason()));
+        }
+
+        // Qualquer erro inesperado — esconde o detalhe do cliente
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
+            log.error("Unexpected error: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Internal server error"));
+        }
+    }
 }
