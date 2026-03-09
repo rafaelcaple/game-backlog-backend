@@ -1,8 +1,8 @@
 # Game Backlog - Backend
 
-REST API for managing a personal game backlog, integrated with the [RAWG Video Games Database API](https://rawg.io/apidocs).
+REST API for managing a personal game backlog. Uses [IGDB](https://api-docs.igdb.com/) as the default game data provider, with built-in support for switching to [RAWG](https://rawg.io/apidocs).
 
-### [Live Demo](https://game-backlog-topaz.vercel.app/) 
+### [Live Demo](https://game-backlog-topaz.vercel.app/)
 ### [Frontend Repository](https://github.com/rafaelcaple/game-backlog)
 
 ## Tech Stack
@@ -11,9 +11,18 @@ REST API for managing a personal game backlog, integrated with the [RAWG Video G
 - Spring Boot
 - Spring Security + JWT (authentication & authorization)
 - Spring Data JPA
-- Spring WebFlux (WebClient for RAWG API integration)
+- Spring WebFlux (WebClient for IGDB and RAWG API integration)
 - PostgreSQL
 - Docker
+
+## Features
+
+- JWT-based authentication (register & login)
+- Search games by name via IGDB (or RAWG)
+- Save games to a personal backlog
+- Track and update game status (Backlog, Playing, Completed, Dropped)
+- Per-user data isolation - each user only sees their own games
+- Pluggable games provider - switch between IGDB and RAWG via config
 
 ## Endpoints
 
@@ -32,7 +41,6 @@ REST API for managing a personal game backlog, integrated with the [RAWG Video G
 }
 ```
 
-
 ---
 
 ### Games (requires authentication)
@@ -42,8 +50,8 @@ All game routes require the `Authorization: Bearer <token>` header.
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/games` | List all games saved by the authenticated user |
-| `GET` | `/games/search?query=` | Search games via RAWG API |
-| `POST` | `/games/save/{rawgId}` | Save a game from RAWG to the user's backlog |
+| `GET` | `/games/search?query=` | Search games via IGDB API |
+| `POST` | `/games/save/{gameId}` | Save a game from IGDB to the user's backlog |
 | `PATCH` | `/games/{id}/status?status=` | Update the status of a game |
 | `DELETE` | `/games/{id}` | Remove a game from the backlog |
 
@@ -56,6 +64,22 @@ All game routes require the `Authorization: Bearer <token>` header.
 | `COMPLETED` | Games you have completed |
 | `DROPPED` | Games you stopped playing |
 
+## Games Provider
+
+The provider used to search and fetch game data is configurable. Set `game.provider` in `application.properties` (or the `GAME_PROVIDER` env var) to one of the supported values:
+
+| Value | Provider | Credentials needed |
+|-------|----------|--------------------|
+| `IGDB` | [IGDB API](https://api-docs.igdb.com/) (default) | `IGDB_CLIENT_ID` + `IGDB_CLIENT_SECRET` |
+| `RAWG` | [RAWG Video Games Database](https://rawg.io/apidocs) | `RAWG_API_KEY` |
+
+```properties
+# application.properties
+game.provider=IGDB   # change to RAWG to switch providers
+```
+
+Only the credentials for the active provider need to be set.
+
 ## How to Run
 
 ### Prerequisites
@@ -63,13 +87,16 @@ All game routes require the `Authorization: Bearer <token>` header.
 - Java 17+
 - Maven
 - PostgreSQL instance
-- RAWG API key — get one at [rawg.io/apidocs](https://rawg.io/apidocs)
+- IGDB credentials (default) - register a Twitch app at [dev.twitch.tv](https://dev.twitch.tv/console) to obtain a Client ID and Client Secret
+- **or** RAWG API key - get one at [rawg.io/apidocs](https://rawg.io/apidocs) if using the RAWG provider
 
 ### Environment Variables
 
 | Variable | Description |
 |----------|-------------|
-| `RAWG_API_KEY` | Your RAWG API key |
+| `IGDB_CLIENT_ID` | Your Twitch / IGDB client ID *(IGDB provider)* |
+| `IGDB_CLIENT_SECRET` | Your Twitch / IGDB client secret *(IGDB provider)* |
+| `RAWG_API_KEY` | Your RAWG API key *(RAWG provider)* |
 | `JWT_SECRET` | Secret key used to sign JWT tokens |
 | `PGHOST` | PostgreSQL host |
 | `PGPORT` | PostgreSQL port |
@@ -90,7 +117,9 @@ cd game-backlog-backend
 
 ```bash
 # Linux/macOS
-export RAWG_API_KEY=your_rawg_key
+export IGDB_CLIENT_ID=your_igdb_client_id
+export IGDB_CLIENT_SECRET=your_igdb_client_secret
+# export RAWG_API_KEY=your_rawg_key  # only if using RAWG provider
 export JWT_SECRET=your_super_secret_key
 export PGHOST=localhost
 export PGPORT=5432
@@ -99,7 +128,9 @@ export PGUSER=postgres
 export PGPASSWORD=your_db_password
 
 # Windows (PowerShell)
-$env:RAWG_API_KEY="your_rawg_key"
+$env:IGDB_CLIENT_ID="your_igdb_client_id"
+$env:IGDB_CLIENT_SECRET="your_igdb_client_secret"
+# $env:RAWG_API_KEY="your_rawg_key"  # only if using RAWG provider
 $env:JWT_SECRET="your_super_secret_key"
 $env:PGHOST="localhost"
 $env:PGPORT="5432"
@@ -126,9 +157,12 @@ docker build -t game-backlog-backend .
 
 **2. Run the container**
 
+> If using the RAWG provider, add `-e RAWG_API_KEY=your_rawg_key` and remove the IGDB variables.
+
 ```bash
 docker run -p 8080:8080 \
-  -e RAWG_API_KEY=your_rawg_key \
+  -e IGDB_CLIENT_ID=your_igdb_client_id \
+  -e IGDB_CLIENT_SECRET=your_igdb_client_secret \
   -e JWT_SECRET=your_super_secret_key \
   -e PGHOST=your_db_host \
   -e PGPORT=5432 \
