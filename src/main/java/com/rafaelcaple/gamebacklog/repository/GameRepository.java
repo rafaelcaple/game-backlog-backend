@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface GameRepository extends JpaRepository<Game,Long> {
     List<Game> findByUserId(Long userId);
-    boolean existsByRawgIdAndUser(Integer rawgId, User user);
+    boolean existsByExternalIdAndUser(Integer externalId, User user);
 
 }

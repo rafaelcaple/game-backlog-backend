@@ -3,7 +3,6 @@ package com.rafaelcaple.gamebacklog.entity;
 import com.rafaelcaple.gamebacklog.enums.GameEnums;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name="GAMES")
@@ -23,7 +22,7 @@ public class Game {
     private GameEnums.GameStatus status;
 
     @Column(nullable = false)
-    private Integer rawgId;
+    private Integer externalId;
     @Column
     private String coverImage;
 
