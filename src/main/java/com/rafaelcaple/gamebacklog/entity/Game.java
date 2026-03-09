@@ -1,5 +1,6 @@
 package com.rafaelcaple.gamebacklog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rafaelcaple.gamebacklog.enums.GameEnums;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
 }
