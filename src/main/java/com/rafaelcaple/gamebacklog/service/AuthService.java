@@ -23,6 +23,7 @@ public class AuthService {
         String hashedPassword = passwordEncoder.encode(password);
         User user = new User();
         user.setUsername(username.toLowerCase().trim());
+        user.setDisplayName(username.trim());
         user.setPassword(hashedPassword);
         user = userRepository.save(user);
         return jwtService.generateToken(user);

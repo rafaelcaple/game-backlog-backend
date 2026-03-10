@@ -20,6 +20,8 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
+    private String displayName;
+    @Column(nullable = false)
     private String password;
     @OneToMany(mappedBy = "user")
     @JsonIgnore

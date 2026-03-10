@@ -1,5 +1,6 @@
 package com.rafaelcaple.gamebacklog.security;
 
+import com.rafaelcaple.gamebacklog.entity.User;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,9 +17,10 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken (UserDetails user) {
+    public String generateToken (User user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
+                .claim("DisplayName", user.getDisplayName())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
