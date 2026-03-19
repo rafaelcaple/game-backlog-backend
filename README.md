@@ -1,6 +1,6 @@
 # Game Backlog - Backend
 
-REST API for managing a personal game backlog. Uses [IGDB](https://api-docs.igdb.com/) as the default game data provider, with built-in support for switching to [RAWG](https://rawg.io/apidocs).
+REST API for tracking and organizing a personal game backlog, with JWT authentication and IGDB/RAWG integration.
 
 ### [Frontend Repository](https://github.com/rafaelcaple/game-backlog)
 
