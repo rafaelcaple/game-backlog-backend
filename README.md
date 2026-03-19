@@ -2,7 +2,6 @@
 
 REST API for managing a personal game backlog. Uses [IGDB](https://api-docs.igdb.com/) as the default game data provider, with built-in support for switching to [RAWG](https://rawg.io/apidocs).
 
-### [Live Demo](https://game-backlog-topaz.vercel.app/)
 ### [Frontend Repository](https://github.com/rafaelcaple/game-backlog)
 
 ## Tech Stack
